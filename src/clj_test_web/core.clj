@@ -1,37 +1,36 @@
 (ns clj-test-web.core
   (use server.socket)
-  (use clj-test-web.logger))
+  (use clj-test-web.logger)
+  (use clj-test-web.parser))
 (import '[java.io BufferedReader InputStreamReader OutputStreamWriter])
 
 (def port 1234)
+(def verbose true)
 
 (defn respond [request]
-  (println
-    (cond (= "quit" request) "good bye"
-          (= "?" request) "42"
-          :else request)))
+  (println request))
 
 (defn log [input]
   (log2anywhere input))
 
-(defn response [input]
-  "HTTP/1.1 200 OK \n\r\n\r <html><body>Test</body></html>")
+(defn response [body]
+  (str "HTTP/1.1 200 OK \n\r\n\r <html><body>You requested: "
+    body
+    "</body></html> \n\r"))
 
 (defn event-loop []
   (loop [input(read-line)]
-    (log input)
-    (respond (response input))
-    (if (not= "quit" input) (recur (read-line)))))
+    (if verbose (log input))
+    (respond (response (parse input)))))
 
-(defn echo-server [in out]
+(defn http-server [in out]
   (binding
     [*in* (BufferedReader. (InputStreamReader. in))
      *out* (OutputStreamWriter. out)]
     (event-loop)))
 
-(defn main
-  []
+(defn main []
   (println "starting server on port" port))
-  (create-server port echo-server)
+  (create-server port http-server)
 
 
