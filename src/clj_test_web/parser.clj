@@ -14,7 +14,7 @@
   (nth (str/split request #" ") 1))
 
 (defn params [request]
-  (str/split (params_string (url_with_params request)) #"\&"))
+  (apply hash-map (str/split (params_string (url_with_params request)) #"(&|=)")))
 
 (defn path [request]
   (url_string (url_with_params request)))
