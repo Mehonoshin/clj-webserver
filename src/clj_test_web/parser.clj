@@ -13,8 +13,15 @@
 (defn url_with_params [request]
   (nth (str/split request #" ") 1))
 
+(defn params_vector
+  [request]
+  (str/split (params_string (url_with_params request)) #"(&|=)"))
+
 (defn params [request]
-  (apply hash-map (str/split (params_string (url_with_params request)) #"(&|=)")))
+  (if
+    (> (count (params_vector request)) 1)
+    (apply hash-map (params_vector request)))
+    [])
 
 (defn path [request]
   (str/replace-first (url_string (url_with_params request)) #"^.*?/" ""))
