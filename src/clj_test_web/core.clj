@@ -1,11 +1,10 @@
 (ns clj-test-web.core
   (use server.socket)
   (use clj-test-web.logger)
+  (use clj-test-web.file_reader)
   (use clj-test-web.parser))
 (import '[java.io BufferedReader InputStreamReader OutputStreamWriter])
-
-(def port 1234)
-(def verbose true)
+(require '[clj-test-web.config :as config])
 
 (defn respond [request]
   (println request))
@@ -13,14 +12,12 @@
 (defn log [input]
   (log2anywhere input))
 
-(defn response [body]
-  (str "HTTP/1.1 200 OK \n\r\n\r <html><body>You requested: "
-    body
-    "</body></html> \n\r"))
+(defn response [request]
+  (file_contents_for request))
 
 (defn event-loop []
   (loop [input(read-line)]
-    (if verbose (log input))
+    (if config/verbose (log input))
     (respond (response (parse input)))))
 
 (defn http-server [in out]
@@ -30,7 +27,7 @@
     (event-loop)))
 
 (defn main []
-  (println "starting server on port" port))
-  (create-server port http-server)
+  (println "starting server on port" config/port)
+  (create-server config/port http-server))
 
 

@@ -17,7 +17,7 @@
   (apply hash-map (str/split (params_string (url_with_params request)) #"(&|=)")))
 
 (defn path [request]
-  (url_string (url_with_params request)))
+  (str/replace-first (url_string (url_with_params request)) #"^.*?/" ""))
 
 (defn parse [request]
   { :path (path request) :params (params request) })
