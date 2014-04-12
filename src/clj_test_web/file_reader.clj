@@ -1,5 +1,5 @@
-(ns clj-test-web.file_reader)
-(require '[clj-test-web.config :as config])
+(ns clj-test-web.file_reader
+  (:require [clj-test-web.config :as config]))
 
 (defn filename
   [request]

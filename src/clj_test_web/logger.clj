@@ -1,5 +1,5 @@
-(ns clj-test-web.logger)
-(require 'clojure.java.io)
+(ns clj-test-web.logger
+  (:require clojure.java.io))
 
 (defn print-logger
   [writer]

@@ -1,10 +1,10 @@
 (ns clj-test-web.core
-  (use server.socket)
-  (use clj-test-web.logger)
-  (use clj-test-web.file_reader)
-  (use clj-test-web.parser))
-(import '[java.io BufferedReader InputStreamReader OutputStreamWriter])
-(require '[clj-test-web.config :as config])
+  (:use server.socket)
+  (:use clj-test-web.logger
+        clj-test-web.file_reader
+        clj-test-web.parser)
+  (:import (java.io BufferedReader InputStreamReader OutputStreamWriter))
+  (:require [clj-test-web.config :as config]))
 
 (defn respond [request]
   (println request))

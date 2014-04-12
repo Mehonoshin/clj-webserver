@@ -1,5 +1,5 @@
-(ns clj-test-web.parser)
-(require '[clojure.string :as str])
+(ns clj-test-web.parser
+  (:require [clojure.string :as str]))
 
 (defn params_string
   [query]
