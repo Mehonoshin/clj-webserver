@@ -4,13 +4,13 @@
 (defn filename
   [request]
   (if
-    (= (get request :path) "")
-    config/default_file
-    (get request :path)))
+    (re-matches #".*.html" (get request :path))
+    (get request :path)
+    (str (get request :path) "/" config/default_file)))
 
 (defn path_to_file
-  [path]
-  (str config/root_dir "/" path))
+  [filename]
+  (str config/root_dir "/" filename))
 
 (defn file_contents_for
   [request]
