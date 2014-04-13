@@ -1,11 +1,11 @@
-(ns clj-test-web.file_reader
+(ns clj-test-web.response.file_reader
   (:require [clj-test-web.config :as config]))
 
 (defn filename
   [request]
   (if
     (= (get request :path) "")
-    "index.html"
+    config/default_file
     (get request :path)))
 
 (defn path_to_file

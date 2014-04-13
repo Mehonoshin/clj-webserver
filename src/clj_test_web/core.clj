@@ -1,24 +1,21 @@
 (ns clj-test-web.core
   (:use server.socket)
-  (:use clj-test-web.logger
-        clj-test-web.file_reader
-        clj-test-web.parser)
+  (:use clj-test-web.response.http-response
+        clj-test-web.request.parser)
   (:import (java.io BufferedReader InputStreamReader OutputStreamWriter))
-  (:require [clj-test-web.config :as config]))
+  (:require [clj-test-web.config :as config])
+  (:require [clj-test-web.logger :as logger]))
 
-(defn respond [request]
-  (println request))
+(defn respond [response-data]
+  (println response-data))
 
-(defn log [input]
-  (log2anywhere input))
-
-(defn response [request]
-  (file_contents_for request))
+(defn log [http-request]
+  (logger/log2anywhere http-request))
 
 (defn event-loop []
-  (loop [input(read-line)]
-    (if config/verbose (log input))
-    (respond (response (parse input)))))
+  (loop [http-request(read-line)]
+    (if config/verbose (log http-request))
+    (respond (build-http-response (parse http-request)))))
 
 (defn http-server [in out]
   (binding
