@@ -17,3 +17,7 @@
   (slurp
     (path_to_file
       (filename request))))
+
+(defn not_found
+  []
+  (slurp (str config/root_dir "/" config/not_found_file)))
